@@ -34,13 +34,6 @@ This is a Python script that generates and stores project ideas based on a list 
 
 6. Exit the program: Once you have made your selections, the script will exit.
 
-## File Structure
-
-- `main.py`: The main script that orchestrates the generation and storage of project ideas.
-- `nounseed/`: A package directory containing the following modules:
-  - `__init__.py`: An empty file that makes the `nounseed` directory a Python package.
-  - `csv_utils.py`: A module containing utility functions for reading and writing CSV files.
-
 ## Configuration
 
 The script uses the following configuration variables:
