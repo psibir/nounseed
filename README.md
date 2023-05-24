@@ -1,4 +1,6 @@
-# NounSeeder
+# nounseed
+
+![image](/nounseed_logo.png)
 
 This is a Python script that generates and stores project ideas based on a list of nouns. The `NounSeeder` class is responsible for loading the nouns, generating project ideas, and storing them. The script utilizes the `csv` module and the `pathlib` module for file operations.
 
