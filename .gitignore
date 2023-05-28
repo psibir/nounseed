@@ -1,4 +1,5 @@
-storednouns.csv
 build/
+dist/
 .venv
 nounseed.egg-info
+nounsee/storednouns.csv
