@@ -1,6 +1,8 @@
 import csv
 import random
 from pathlib import Path
+import argparse
+
 
 STORED_NOUNS_FILE = "storednouns.csv"
 CSV_FILE = "nounlist.csv"
@@ -22,28 +24,36 @@ class NounSeeder:
         if len(self.nouns) < 2:
             raise ValueError("There are not enough nouns to generate project ideas.")
 
+        original_list = []
         project_ideas = []
         for _ in range(num_ideas):
             noun1, noun2 = random.sample(self.nouns, 2)
+            original_list.extend([noun1, noun2])
             project_ideas.append(f"{noun1}{noun2}")
 
-        return project_ideas
+        return project_ideas, original_list
 
 
 class ProjectIdeasManager:
-    def __init__(self, ideas):
+    def __init__(self, ideas, original_list):
+        self.original_ideas = ideas
         self.ideas = ideas
+        self.original_list = original_list
 
     def select_ideas(self, user_input=input):
         while True:
-            choices = user_input("Enter the numbers of the project ideas you want to store (comma-separated, e.g., 1,3,5), or enter 'view' to see stored ideas, or 'r' to remix the chosen nouns, or 't' to try again: ")
+            choices = user_input(
+                "OPTIONS\n"
+                "Enter the numbers of the project ideas you want to store:\n"
+                "'v' to view stored ideas,\n"
+                "'r' to remix the chosen nouns,\n"
+                "'g' to generate new nouns, or\n"
+                "'q' to quit: "
+            )
 
-            if choices.lower() == 'view':
-                return choices.lower()
-            elif choices.lower() == 'r':
-                return choices.lower()
-            elif choices.lower() == 't':
-                return choices.lower()
+            choices_lower = choices.lower()
+            if choices_lower == 'v' or choices_lower == 'r' or choices_lower == 'g' or choices_lower == 'q':
+                return choices_lower
 
             choices = [int(choice.strip()) for choice in choices.split(',') if choice.strip().isdigit()]
 
@@ -57,22 +67,26 @@ class ProjectIdeasManager:
 
             return choices
 
-    @staticmethod
-    def remix_ideas(ideas):
-        return random.sample(ideas, len(ideas))
+    def remix_ideas(self, original_list):
+        new_ideas = []
+        for _ in range(len(original_list) // 2):
+            noun1, noun2 = random.sample(original_list, 2)
+            new_ideas.append(f"{noun1}{noun2}")
+        return new_ideas
 
     def store_ideas(self, choices, writer=print):
-        if choices == 'view':
+        choices_lower = choices.lower()
+        if choices_lower == 'v':
             self.view_stored_ideas(writer)
             return
-        elif choices == 'r':
-            self.ideas = self.remix_ideas(self.ideas)
+        elif choices_lower == 'r':
+            self.ideas.extend(self.remix_ideas(self.original_list))
             writer("Remixed Project Ideas:")
             for i, idea in enumerate(self.ideas, start=1):
                 writer(f"{i}. {idea}")
             return
-        elif choices == 't':
-            return 't'
+        elif choices_lower == 'g':
+            return 'g'
 
         stored_nouns_file = Path(STORED_NOUNS_FILE)
         with stored_nouns_file.open('a', newline='') as csvfile:
@@ -98,8 +112,8 @@ class ProjectIdeasManager:
 
 def main(args):
     seed = NounSeeder.load_nouns(CSV_FILE)
-    ideas = seed.generate_project_ideas(args.num_ideas)
-    ideas_manager = ProjectIdeasManager(ideas)
+    original_ideas, original_list = seed.generate_project_ideas(args.num_ideas)
+    ideas_manager = ProjectIdeasManager(original_ideas, original_list)
 
     while True:
         print("Generated Project Ideas:")
@@ -107,24 +121,26 @@ def main(args):
             print(f"{i}. {idea}")
 
         choices = ideas_manager.select_ideas()
-        if choices == 't':
+        if choices == 'g':
+            seed = NounSeeder.load_nouns(CSV_FILE)
+            ideas_manager.original_ideas, ideas_manager.original_list = seed.generate_project_ideas(args.num_ideas)
+            ideas_manager.ideas = ideas_manager.original_ideas
             continue
+        elif choices == 'q':
+            break
 
         ideas_manager.store_ideas(choices)
 
-        try_again = input("Do you want to try again? (y/n): ")
-        if try_again.lower() != 'y':
+        choices_lower = choices.lower()
+        if choices_lower != 'r':
             break
+
+        ideas_manager.ideas = ideas_manager.original_ideas
 
     print("Exiting the program.")
 
 
 if __name__ == '__main__':
-    import argparse
-
-    CSV_FILE = 'nounlist.csv'
-    STORED_NOUNS_FILE = 'storednouns.csv'
-
     parser = argparse.ArgumentParser(description="Generate and store project ideas.")
     parser.add_argument("-n", "--num-ideas", type=int, default=10, help="number of project ideas to generate")
     args = parser.parse_args()

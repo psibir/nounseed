@@ -1,45 +1,58 @@
-# NounSeed
+# nounseed
 
-NounSeed is a Python script that generates and manages project ideas based on a list of nouns. It allows you to select and store project ideas, view stored ideas, remix the chosen nouns, and try generating project ideas again.
+![logo](/nounseed_logo.png)
 
-## Prerequisites
-
-- Python 3.x
-- Required Python packages: `csv`, `random`, `pathlib`
+`nounseed` is a Python program that generates and stores project ideas based on randomly chosen nouns. It utilizes two classes, `NounSeeder` and `ProjectIdeasManager`, to handle the generation and management of project ideas.
 
 ## Usage
 
-1. Make sure you have the required Python packages installed.
-2. Place your list of nouns in a CSV file named `nounlist.csv`. Each noun should be listed in a separate row.
-3. Run the `nounseed.py` script using the following command:
+To use the `nounseed` program, follow these steps:
 
+1. Ensure you have Python installed on your system.
+2. Clone the `nounseed` repository from GitHub:
+
+   ```shell
+   git clone https://github.com/psibir/nounseed.git
    ```
-   python nounseed.py [-n NUM_IDEAS]
+
+3. Navigate to the cloned directory:
+
+   ```shell
+   cd nounseed
    ```
 
-   Optional arguments:
-   - `-n NUM_IDEAS`: Number of project ideas to generate (default is 10)
+4. Install the required dependencies:
 
-4. The script will display a list of generated project ideas with corresponding numbers.
-5. Enter the numbers of the project ideas you want to store, separated by commas. Alternatively, you can enter:
-   - `view` to see the stored project ideas
-   - `r` to remix the chosen nouns and display the new project ideas
-   - `t` to try generating project ideas again
-6. If you selected project ideas to store, they will be stored in a CSV file named `storednouns.csv`.
-7. After storing project ideas or viewing them, you will be prompted to try again. Enter `y` to generate project ideas again or `n` to exit the program.
+   ```shell
+   pip install -r requirements.txt
+   ```
 
-## File Descriptions
+5. Run the program with the desired number of project ideas to generate:
 
-- `nounseed.py`: The main script file that generates and manages project ideas.
-- `nounlist.csv`: A CSV file containing the list of nouns used for generating project ideas.
-- `storednouns.csv`: A CSV file where the stored project ideas are stored.
+   ```shell
+   python -m nounseed --num-ideas <number_of_ideas>
+   ```
 
-## Customization
+   Replace `<number_of_ideas>` with the desired number of project ideas to generate. If no number is provided, the program will generate 10 project ideas by default.
 
-- To modify the input noun list, update the `nounlist.csv` file with your desired nouns.
-- To change the generated project ideas limit, use the `-n` or `--num-ideas` argument when running the script.
-- To change the file names for the noun list and stored ideas, update the `CSV_FILE` and `STORED_NOUNS_FILE` variables in the script.
+6. Follow the on-screen instructions to store project ideas, remix chosen nouns, generate new nouns, view stored ideas, or quit the program.
 
-## License
+## Dependencies
 
-This project is licensed under the [MIT License](LICENSE).
+The `nounseed` program has the following dependencies:
+
+- Python 3.x
+- `argparse` (standard library)
+- `csv` (standard library)
+- `random` (standard library)
+- `pathlib` (standard library)
+
+## Files
+
+- `__main__.py`: This script contains the main functionality of the `nounseed` program. It generates and stores project ideas based on user input.
+- `nounlist.csv`: This CSV file contains a list of nouns that are used to generate project ideas.
+- `storednouns.csv`: This CSV file stores the project ideas that the user chooses to store during the program execution.
+
+# License
+
+See the [LICENSE](LICENSE)
