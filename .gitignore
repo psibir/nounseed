@@ -1,1 +1,4 @@
 storednouns.csv
+build/
+.venv
+nounseed.egg-info

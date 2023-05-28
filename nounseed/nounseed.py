@@ -110,7 +110,11 @@ class ProjectIdeasManager:
             writer("No stored project ideas found.")
 
 
-def main(args):
+def main():
+    parser = argparse.ArgumentParser(description="Generate and store project ideas.")
+    parser.add_argument("-n", "--num-ideas", type=int, default=10, help="number of project ideas to generate")
+    args = parser.parse_args()
+
     seed = NounSeeder.load_nouns(CSV_FILE)
     original_ideas, original_list = seed.generate_project_ideas(args.num_ideas)
     ideas_manager = ProjectIdeasManager(original_ideas, original_list)
@@ -141,8 +145,5 @@ def main(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Generate and store project ideas.")
-    parser.add_argument("-n", "--num-ideas", type=int, default=10, help="number of project ideas to generate")
-    args = parser.parse_args()
-
-    main(args)
+    main()
+    

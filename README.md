@@ -1,67 +1,62 @@
 # nounseed
 
-![image](/nounseed_logo.png)
-
 ![logo](/nounseed_logo.png)
 
-`nounseed` is a Python program that generates and stores project ideas based on randomly chosen nouns. It utilizes two classes, `NounSeeder` and `ProjectIdeasManager`, to handle the generation and management of project ideas.
+# NounSeed
+
+NounSeed is a Python package that generates and stores project ideas based on a list of nouns. It uses random combinations of nouns to create unique project ideas. The generated ideas can be stored for future reference or remixed to generate new ideas.
+
+## Installation
+
+To install NounSeed, you can use `pip`:
+
+```bash
+pip install nounseed
+```
 
 ## Usage
 
-To use the `nounseed` program, follow these steps:
+After installing NounSeed, you can run it from the command line by typing `nounseed`. By default, it will generate 10 project ideas. You can specify the number of ideas to generate using the `-n` or `--num-ideas` option:
 
-1. Ensure you have Python installed on your system.
-2. Clone the `nounseed` repository from GitHub:
+```bash
+nounseed -n 20
+```
 
-   ```shell
-   git clone https://github.com/psibir/nounseed.git
-   ```
+## Options
 
-3. Navigate to the cloned directory:
+When running NounSeed, you have the following options:
 
-   ```shell
-   cd nounseed
-   ```
-
-4. Install the required dependencies:
-
-## File Structure
-
-- `main.py`: The main script that orchestrates the generation and storage of project ideas.
-- `nounseed/`: A package directory containing the following modules:
-  - `__init__.py`: An empty file that makes the `nounseed` directory a Python package.
-  - `csv_utils.py`: A module containing utility functions for reading and writing CSV files.
+- Enter the numbers of the project ideas you want to store.
+- 'v' to view stored ideas.
+- 'r' to remix the chosen nouns.
+- 'g' to generate new nouns.
+- 'q' to quit the program.
 
 ## Configuration
 
-   Replace `<number_of_ideas>` with the desired number of project ideas to generate. If no number is provided, the program will generate 10 project ideas by default.
+NounSeed requires two input files:
 
-6. Follow the on-screen instructions to store project ideas, remix chosen nouns, generate new nouns, view stored ideas, or quit the program.
+- `nounlist.csv`: This file should contain a list of nouns, each on a separate line.
+- `storednouns.csv`: This file is used to store the project ideas you choose to save.
 
-## Dependencies
+Make sure these files are present in the same directory as the NounSeed script.
 
-The `nounseed` program has the following dependencies:
+## Examples
 
-- Python 3.x
-- `argparse` (standard library)
-- `csv` (standard library)
-- `random` (standard library)
-- `pathlib` (standard library)
+Here are some examples of using NounSeed:
 
-## Files
+```bash
+# Generate 10 project ideas
+nounseed
 
-- `__main__.py`: This script contains the main functionality of the `nounseed` program. It generates and stores project ideas based on user input.
-- `nounlist.csv`: This CSV file contains a list of nouns that are used to generate project ideas.
-- `storednouns.csv`: This CSV file stores the project ideas that the user chooses to store during the program execution.
+# Generate 20 project ideas
+nounseed -n 20
+```
 
-# License
+## About
 
-This script is released under the MIT License. You can find the full license text in the `LICENSE` file.
+NounSeed is developed by [psibir](https://github.com/psibir) and is released under the MIT license. You can find the source code and contribute to the project on [GitHub](https://github.com/psibir/NounSeed).
 
-## Contributions
+For any issues or questions, please open an issue on the GitHub repository.
 
-Contributions to the script are welcome. If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on the GitHub repository.
-
-## Disclaimer
-
-This script is provided as-is without any warranty. Use it at your own risk. The author is not responsible for any direct or indirect damage caused by using this script.
+Enjoy generating unique project ideas with NounSeed!
