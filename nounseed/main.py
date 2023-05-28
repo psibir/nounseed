@@ -5,6 +5,7 @@ from pathlib import Path
 STORED_NOUNS_FILE = "storednouns.csv"
 CSV_FILE = "nounlist.csv"
 
+
 class NounSeeder:
     def __init__(self, nouns):
         self.nouns = nouns
@@ -29,62 +30,91 @@ class NounSeeder:
         return project_ideas
 
 
-def select_project_ideas(ideas, user_input=input):
-    while True:
-        choices = user_input("Enter the numbers of the project ideas you want to store (comma-separated, e.g., 1,3,5), or enter 'view' to see stored ideas: ")
+class ProjectIdeasManager:
+    def __init__(self, ideas):
+        self.ideas = ideas
 
-        if choices.lower() == 'view':
-            return choices.lower()
+    def select_ideas(self, user_input=input):
+        while True:
+            choices = user_input("Enter the numbers of the project ideas you want to store (comma-separated, e.g., 1,3,5), or enter 'view' to see stored ideas, or 'r' to remix the chosen nouns, or 't' to try again: ")
 
-        choices = [int(choice.strip()) for choice in choices.split(',') if choice.strip().isdigit()]
+            if choices.lower() == 'view':
+                return choices.lower()
+            elif choices.lower() == 'r':
+                return choices.lower()
+            elif choices.lower() == 't':
+                return choices.lower()
 
-        if not choices:
-            print("No choices provided. Exiting the program.")
-            raise SystemExit
+            choices = [int(choice.strip()) for choice in choices.split(',') if choice.strip().isdigit()]
 
-        if any(choice not in range(1, len(ideas) + 1) for choice in choices):
-            print("Invalid choices. Please enter valid numbers.")
-            raise SystemExit
+            if not choices:
+                print("No choices provided. Exiting the program.")
+                raise SystemExit
 
-        return choices
+            if any(choice not in range(1, len(self.ideas) + 1) for choice in choices):
+                print("Invalid choices. Please enter valid numbers.")
+                raise SystemExit
 
+            return choices
 
-def store_project_ideas(ideas, choices, writer=print):
-    if choices == 'view':
-        view_stored_ideas(writer)
-        return
+    @staticmethod
+    def remix_ideas(ideas):
+        return random.sample(ideas, len(ideas))
 
-    stored_nouns_file = Path(STORED_NOUNS_FILE)
-    with stored_nouns_file.open('a', newline='') as csvfile:
-        csv_writer = csv.writer(csvfile)
-        for choice in choices:
-            selected_idea = ideas[choice - 1]
-            csv_writer.writerow([selected_idea])
-            writer(f"Idea '{selected_idea}' has been stored in '{STORED_NOUNS_FILE}'.")
+    def store_ideas(self, choices, writer=print):
+        if choices == 'view':
+            self.view_stored_ideas(writer)
+            return
+        elif choices == 'r':
+            self.ideas = self.remix_ideas(self.ideas)
+            writer("Remixed Project Ideas:")
+            for i, idea in enumerate(self.ideas, start=1):
+                writer(f"{i}. {idea}")
+            return
+        elif choices == 't':
+            return 't'
 
+        stored_nouns_file = Path(STORED_NOUNS_FILE)
+        with stored_nouns_file.open('a', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            for choice in choices:
+                selected_idea = self.ideas[choice - 1]
+                csv_writer.writerow([selected_idea])
+                writer(f"Idea '{selected_idea}' has been stored in '{STORED_NOUNS_FILE}'.")
 
-def view_stored_ideas(writer=print):
-    stored_nouns_file = Path(STORED_NOUNS_FILE)
-    if stored_nouns_file.exists():
-        with stored_nouns_file.open('r') as csvfile:
-            reader = csv.reader(csvfile)
-            stored_ideas = list(reader)
-            writer("Stored Project Ideas:")
-            for i, idea in enumerate(stored_ideas, start=1):
-                writer(f"{i}. {idea[0]}")
-    else:
-        writer("No stored project ideas found.")
+    @staticmethod
+    def view_stored_ideas(writer=print):
+        stored_nouns_file = Path(STORED_NOUNS_FILE)
+        if stored_nouns_file.exists():
+            with stored_nouns_file.open('r') as csvfile:
+                reader = csv.reader(csvfile)
+                stored_ideas = list(reader)
+                writer("Stored Project Ideas:")
+                for i, idea in enumerate(stored_ideas, start=1):
+                    writer(f"{i}. {idea[0]}")
+        else:
+            writer("No stored project ideas found.")
 
 
 def main(args):
     seed = NounSeeder.load_nouns(CSV_FILE)
     ideas = seed.generate_project_ideas(args.num_ideas)
-    print("Generated Project Ideas:")
-    for i, idea in enumerate(ideas, start=1):
-        print(f"{i}. {idea}")
+    ideas_manager = ProjectIdeasManager(ideas)
 
-    choices = select_project_ideas(ideas)
-    store_project_ideas(ideas, choices)
+    while True:
+        print("Generated Project Ideas:")
+        for i, idea in enumerate(ideas_manager.ideas, start=1):
+            print(f"{i}. {idea}")
+
+        choices = ideas_manager.select_ideas()
+        if choices == 't':
+            continue
+
+        ideas_manager.store_ideas(choices)
+
+        try_again = input("Do you want to try again? (y/n): ")
+        if try_again.lower() != 'y':
+            break
 
     print("Exiting the program.")
 
