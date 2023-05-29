@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='nounseed',
-    version='1.0',
+    version='1.0.3',
     description='A package for generating and storing project ideas',
     author='psibir',
     packages=['nounseed'],
@@ -12,7 +12,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'nounseed = nounseed.nounseed:main'
+            'nounseed = nounseed.__main__:main'
         ]
     }
 )

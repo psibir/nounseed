@@ -4,8 +4,8 @@ from pathlib import Path
 import argparse
 
 
-STORED_NOUNS_FILE = "storednouns.csv"
-CSV_FILE = "nounlist.csv"
+STORED_NOUNS_FILE = "nounseed/storednouns.csv"
+CSV_FILE = "nounseed/nounlist.csv"
 
 
 class NounSeeder:
@@ -75,17 +75,16 @@ class ProjectIdeasManager:
         return new_ideas
 
     def store_ideas(self, choices, writer=print):
-        choices_lower = choices.lower()
-        if choices_lower == 'v':
+        if choices == 'v':
             self.view_stored_ideas(writer)
             return
-        elif choices_lower == 'r':
+        elif choices == 'r':
             self.ideas.extend(self.remix_ideas(self.original_list))
             writer("Remixed Project Ideas:")
             for i, idea in enumerate(self.ideas, start=1):
                 writer(f"{i}. {idea}")
             return
-        elif choices_lower == 'g':
+        elif choices == 'g':
             return 'g'
 
         stored_nouns_file = Path(STORED_NOUNS_FILE)
@@ -135,8 +134,7 @@ def main():
 
         ideas_manager.store_ideas(choices)
 
-        choices_lower = choices.lower()
-        if choices_lower != 'r':
+        if choices != 'r':
             break
 
         ideas_manager.ideas = ideas_manager.original_ideas
@@ -146,4 +144,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
