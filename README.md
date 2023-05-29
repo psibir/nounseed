@@ -10,7 +10,14 @@ Nounseed is a Python script that generates project ideas by combining two random
 
 ## Installation
 
-1. Clone the repository:
+1a. Run:
+
+```Python
+pip install nounseed
+```
+or
+
+1b. Clone the repository:
    ```shell
    git clone https://github.com/psibir/nounseed.git
    ```
