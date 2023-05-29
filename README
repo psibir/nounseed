@@ -1,6 +1,6 @@
 # nounseed
 
-![logo](nounseed_logo.png)
+![logo](/nounseed_logo.png)
 
 Nounseed is a Python script that generates project ideas by combining two randomly selected nouns. It allows you to store and manage project ideas for future reference.
 
