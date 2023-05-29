@@ -2,4 +2,5 @@ build/
 dist/
 .venv
 nounseed.egg-info
-nounsee/storednouns.csv
+nounseed/storednouns.csv
+nounseed/__pycache__
